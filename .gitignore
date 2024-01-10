@@ -1,5 +1,8 @@
 out
 dist
-node_modules
+**/node_modules
 .vscode-test/
 *.vsix
+**/__pycache__
+last-command.txt
+examples/.vscode

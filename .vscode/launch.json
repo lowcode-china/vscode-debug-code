@@ -29,6 +29,14 @@
 				"${workspaceFolder}/out/test/**/*.js"
 			],
 			"preLaunchTask": "${defaultBuildTask}"
+		},
+		{
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"program": "/Users/whc/workspace/code/lowcode-engine/libs/vscode-debug-code/examples/node_dir/run.js",
+			"args": [],
+			"name": "debug run.js",
+			"type": "node"
 		}
 	]
 }

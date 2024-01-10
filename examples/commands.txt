@@ -1,0 +1,25 @@
+python --version
+
+DEBUG=ON; python ./run.py --help; $description=”run python file by `debug here`“; $cwd=${workspaceFolder}/python_dir
+
+DEBUG=ON; $cwd=${workspaceFolder}/python_dir; python run.py;
+
+PYTHONPATH="${workspaceFolder}/lib1:${workspaceFolder}/lib2"; $cwd=${workspaceFolder}/python_dir; DEBUG=ON; python -m module_a.run --help
+
+$cwd=${workspaceFolder}/python_dir; python -m flask --app flask_server run
+
+go version
+
+$cwd=${workspaceFolder}/go_dir; go run ${workspaceFolder}/go_dir/run.go
+
+go run ${workspaceFolder}/go_dir/run.go --help
+ 
+git -v
+
+node -v
+
+node ${workspaceFolder}/node_dir/run_js.js
+
+node ${workspaceFolder}/node_dir/run_ts.ts
+
+cd ./vite-project; pnpm dev
