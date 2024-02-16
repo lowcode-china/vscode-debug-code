@@ -4,7 +4,7 @@
   "description": "Visual Studio Code debugger extension for python/golang/javascript/typescript/command/pytest/jest/go test",
   "publisher": "pychina",
   "icon": "resources/logo.png",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "activationEvents": [
     "*"
