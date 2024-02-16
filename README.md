@@ -2,38 +2,47 @@
 
 ## Overview
 
-In Visual Studio Code (VSCode), setting up configurations for debugging code is typically a prerequisite, which can be quite cumbersome. When developing command-line tools, the need to configure multiple debug scenarios with different parameter combinations often leads to an abundance of configurations that are not only tedious but also highly variable, thus hindering effective communication among developers. debug-code is a tool designed to generate debug configurations based on text input, simplifying this process.
+This plugin can quickly generate configurations in `launch.json`. It can generate configurations in three commands:
 
-`Debug file` - Debug the current file, currently supports only .py, .go, .ts, and .js files.
+- `Debug file`: It will automatically match the most suitable configuration based on the file extension of the currently opened file in the editor and persist it to `.vscode/launch.json`. You can extend this configuration, such as adding environment variables. Currently, it supports **Python**, **Go**, **TypeScript**, and **JavaScript**.
 
-`Debug here` - Parses the text on the current line into a configuration for debugging.
+- `Debug here`: It will parse the text of the line where the mouse cursor is currently located to generate a configuration. Currently, it supports **Python**, **Pytest**, **Rust (Cargo)**, **Go run**, **Go test**, and **Node**.
 
-`Debug last` - Re-runs the previous Debug here operation.
+- `Debug last`: If you have ever run the `Debug here` command, it will be recorded in the `last-commands.txt` file. The `Debug last` command allows you to quickly run the commands in `last-commands.txt`, which acts as a shortcut.
 
-## Usage
+## Why use it?
 
-#### Debug the currently opened file. Currently, debugging of .py, .go, .ts and .js file types is supported.
+It helps us dynamically generate `.vscode/launch.json`, which is especially convenient and efficient when developing command-line tools. Imagine you have N parameters for your command-line tool, and the combinations between these parameters result in M different scenarios. That means with traditional methods, you would need M configurations. That’s too cumbersome and not very conducive to direct communication among developers.
 
-<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_file.gif" style="width: 70%; height: 70%;" >
+Through `Debug here`, you can directly input parameters into the text, for example:
+```
+$cwd=${workspaceFolder}/python-project; DEBUG=ON; PYTHONPATH="lib1"; python -m a.main --help
+```
 
-#### Generate and apply debugging configuration for the current line in the Go/Javascript/Typescript language test file for debugging operations.
+## Examples
 
-<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_go_test.gif" style="width: 70%; height: 70%;" >
+For more [examples](https://github.com/lowcode-china/vscode-debug-code/blob/main/examples/commands.txt), please refer to the code in the examples directory.
 
-<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_jest.gif" style="width: 70%; height: 70%;" >
+### Debug file
 
-<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_pytest.gif" style="width: 70%; height: 70%;" >
+<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_file.gif" style="width: 90%; height: 90%;" >
 
-#### Quickly run the steps from the last Debug Here operation again.
+### Debug here
 
-<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_last.gif" style="width: 70%; height: 70%;" >
+<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_go_test.gif" style="width: 90%; height: 90%;" ><br>
 
-#### Others
+<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_jest.gif" style="width: 90%; height: 90%;" ><br>
 
-<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_npm.gif" style="width: 70%; height: 70%;" >
+<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_pytest.gif" style="width: 90%; height: 90%;" ><br>
 
-<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_ts.gif" style="width: 70%; height: 70%;" >
+<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_npm.gif" style="width: 90%; height: 90%;" ><br>
 
-<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_go.gif" style="width: 70%; height: 70%;" >
+<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_ts.gif" style="width: 90%; height: 90%;" ><br>
 
-<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_python.gif" style="width: 70%; height: 70%;" >
+<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_go.gif" style="width: 90%; height: 90%;" ><br>
+
+<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_here_python.gif" style="width: 90%; height: 90%;" >
+
+### Debug last
+
+<img src="https://github.com/lowcode-zh/vscode-debug-code/raw/main/public/debug_last.gif" style="width: 90%; height: 90%;" >
