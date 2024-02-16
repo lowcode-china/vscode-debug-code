@@ -2,15 +2,35 @@ import { Provider } from "../types";
 import * as vscode from "vscode";
 import { isFile } from "../utils";
 import * as _ from "lodash";
+import * as output from "../utils/output";
 
 export const Providers: Record<string, Provider> = {
+  cargo: {
+    configuration: {
+      type: "lldb",
+      request: "launch",
+      name: "Cargo",
+      args: [],
+      cargo: {
+        args: ["build"],
+      },
+    },
+    runConfig: {
+      pattern: "cargo\\s(run|test)\\s?(?<args>.*)",
+      map: {
+        type: "$type",
+        args: "$args",
+      },
+    },
+  },
   javascript: {
     configuration: {
       request: "launch",
+      args: [],
       name: "Node",
       type: "node",
     },
-    commandParser: {
+    runConfig: {
       pattern: "(?<type>node)\\s(?<program>\\S+)\\s?(?<args>.*)",
       map: {
         type: "$type",
@@ -38,9 +58,10 @@ export const Providers: Record<string, Provider> = {
       request: "launch",
       name: "Typescript",
       type: "node",
+      args: [],
       runtimeArgs: ["-r", "ts-node/register"],
     },
-    commandParser: {
+    runConfig: {
       pattern: "(?<type>node)\\s(?<program>\\S+)\\s?(?<args>.*)",
       map: {
         type: "$type",
@@ -55,9 +76,10 @@ export const Providers: Record<string, Provider> = {
       name: "Python Module",
       type: "python",
       justMyCode: false,
+      args: []
     },
     extensions: ["ms-python.python"],
-    commandParser: {
+    runConfig: {
       pattern: "(?<type>python)\\s-m\\s(?<module>\\S+)\\s?(?<args>.*)",
       map: {
         type: "$type",
@@ -72,9 +94,10 @@ export const Providers: Record<string, Provider> = {
       name: "Python",
       type: "python",
       justMyCode: false,
+      args: []
     },
     extensions: ["ms-python.python"],
-    commandParser: {
+    runConfig: {
       pattern: "(?<type>python)\\s(?<program>\\S+)\\s?(?<args>.*)",
       map: {
         type: "$type",
@@ -89,11 +112,19 @@ export const Providers: Record<string, Provider> = {
       name: "Golang",
       type: "go",
       mode: "auto",
+      args: []
     },
     extensions: ["golang.go"],
-    commandParser: {
-      pattern: "(?<type>go)\\srun\\s(?<program>\\S+)\\s?(?<args>.*)",
+    runConfig: {
+      pattern: "(?<type>go)\\s(?<mode>run|test)\\s?(?<program>\\S*)\\s?(?<args>.*)",
       map: {
+        mode: (value) => {
+          if (value === "run") {
+            return "auto"
+          } else if (value === "test") {
+            return "test"
+          }
+        },
         type: "$type",
         program: "$program",
         args: "$args",
@@ -104,34 +135,29 @@ export const Providers: Record<string, Provider> = {
 
 export const defaultProvider: Provider = {
   configuration: {
+    type: "",
+    name: "",
     request: "launch",
-    cwd: "${workspaceFolder}",
-    program: undefined,
-    args: [],
   },
 };
 
 export async function getProvider(uri: vscode.Uri, ...args: any[]) {
   if (!isFile(uri.fsPath)) return;
 
-  const document = await getDocument(uri);
+  const { languageId } = await getDocument(uri);
 
-  let provider = Providers[document.languageId];
+  let provider = Providers[languageId];
   if (!provider) {
+    output.info(`The ${languageId} provider does not exist!`);
     return;
   }
 
   const base = _.cloneDeep(defaultProvider);
-  base.configuration.program = uri.fsPath;
-  base.configuration.args = args;
-
-  if (provider.moudles) {
-    for (const moudle of provider.moudles) {
-      // TODO: 校验module
-    }
-  }
 
   let configuration = Object.assign(base.configuration, provider.configuration);
+  configuration.program = uri.fsPath;
+  configuration.args = args;
+
   let result = Object.assign(base, provider, { configuration }) as Provider;
   return result;
 }

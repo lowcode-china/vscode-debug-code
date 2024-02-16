@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { getProvider } from "../config";
 import { Extension } from "./extension";
-
+import * as output from "../utils/output";
 
 class ActiveTextEditorListener {
   private disposer?: vscode.Disposable;
@@ -9,12 +9,14 @@ class ActiveTextEditorListener {
   constructor() {
     // 首次立即检查
     if (vscode.window.activeTextEditor) {
-      console.log(`Active doc languageId: ${vscode.window.activeTextEditor?.document.languageId}`);
+      output.info(
+        `Active doc languageId: ${vscode.window.activeTextEditor?.document.languageId}`
+      );
       this.onChange(vscode.window.activeTextEditor);
     }
 
-    this.disposer = vscode.window.onDidChangeActiveTextEditor(editor => {
-      console.log(`Active doc languageId: ${editor?.document.languageId}`);
+    this.disposer = vscode.window.onDidChangeActiveTextEditor((editor) => {
+      output.info(`Active doc languageId: ${editor?.document.languageId}`);
       this.onChange(editor);
     });
   }
@@ -23,7 +25,10 @@ class ActiveTextEditorListener {
     this.disposer?.dispose();
   }
 
-  private async onChange(editor: vscode.TextEditor | undefined, resetCache?: boolean) {
+  private async onChange(
+    editor: vscode.TextEditor | undefined,
+    resetCache?: boolean
+  ) {
     if (!editor) {
       return;
     }

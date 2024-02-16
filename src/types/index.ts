@@ -2,17 +2,16 @@ import { DebugConfiguration } from "vscode"
 
 export declare type AnyObject = Record<string, any>
 
-// @ts-ignore
 export declare interface ProviderConfiguration extends DebugConfiguration {
-  name?: string,
-  type?: string,
-  request?: 'launch',
+  name: string,
+  type: string,
+  request: 'launch',
   program?: string,
   cwd?: string,
   args?: string[],
 }
 
-export declare interface CommandParser {
+export declare interface RunConfig {
   pattern: string,
   map: AnyObject,
 }
@@ -20,7 +19,7 @@ export declare interface CommandParser {
 export declare interface Provider {
   configuration: ProviderConfiguration;
   extensions?: Array<string>;
-  commandParser?: CommandParser;
+  runConfig?: RunConfig;
   moudles?: Array<string>;
 }
 

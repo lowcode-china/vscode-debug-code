@@ -1,0 +1,1 @@
+/Users/whc/workspace/code/lowcode-engine/libs/vscode-debug-code/examples/rust-project/target/debug/rust-project: /Users/whc/workspace/code/lowcode-engine/libs/vscode-debug-code/examples/rust-project/src/main.rs

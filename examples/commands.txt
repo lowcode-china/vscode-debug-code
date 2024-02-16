@@ -1,25 +1,22 @@
-python --version
+// debug python
+$cwd=${workspaceFolder}/python-project; $description="debug here"; DEBUG=ON; python main.py --help
+$cwd=${workspaceFolder}/python-project; DEBUG=ON; PYTHONPATH="lib1:lib2"; python -m a.main --help
+$cwd=${workspaceFolder}/python-project; python -m flask --app flask_server run
+python -m pytest -s ${workspaceFolder}/python-project/tests.py::test_a
+python -m pytest -s ${workspaceFolder}/python-project/tests.py
 
-DEBUG=ON; python ./run.py --help; $description=”run python file by `debug here`“; $cwd=${workspaceFolder}/python_dir
+// debug golang
+go run ${workspaceFolder}/go-project/main.go --help
+$program=${workspaceFolder}/go-project; go test "" -test.v
+$program=${workspaceFolder}/go-project; go test "" -test.v -test.run=TestHelloWorld
 
-DEBUG=ON; $cwd=${workspaceFolder}/python_dir; python run.py;
+// debug node
+node ${workspaceFolder}/node-project/main.js
+node ${workspaceFolder}/node-project/main.ts
 
-PYTHONPATH="${workspaceFolder}/lib1:${workspaceFolder}/lib2"; $cwd=${workspaceFolder}/python_dir; DEBUG=ON; python -m module_a.run --help
+// debug rust
+$justMyCode=true; DEBUG=ON; cargo run --manifest-path ${workspaceFolder}/rust-project/Cargo.toml --
 
-$cwd=${workspaceFolder}/python_dir; python -m flask --app flask_server run
-
-go version
-
-$cwd=${workspaceFolder}/go_dir; go run ${workspaceFolder}/go_dir/run.go
-
-go run ${workspaceFolder}/go_dir/run.go --help
- 
+// others
 git -v
-
-node -v
-
-node ${workspaceFolder}/node_dir/run_js.js
-
-node ${workspaceFolder}/node_dir/run_ts.ts
-
 cd ./vite-project; pnpm dev
